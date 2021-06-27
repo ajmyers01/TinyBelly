@@ -1,0 +1,72 @@
+version: "3"
+
+services:
+  app:
+    tty: true
+    stdin_open: true
+    build: .
+    command: bundle exec puma -C config/puma.rb
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_USER:
+      POSTGRES_PASSWORD:
+      PRIMARY_EMAIL:
+      PRIMARY_PASSWORD:
+      SUPER_SECRET:
+      RAILS_MAX_THREADS: 5
+      REDIS_URL: redis://redis:6379/0
+    ports:
+      - 3000:3000
+    volumes:
+      - .:/usr/src/app
+      - bundler-data:/usr/local/bundle
+
+  sidekiq:
+    build: .
+    command: bundle exec sidekiq -C config/sidekiq.yml
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_USER:
+      POSTGRES_PASSWORD:
+      PRIMARY_EMAIL:
+      PRIMARY_PASSWORD:
+      SUPER_SECRET:
+      RAILS_MAX_THREADS: 5
+      REDIS_URL: redis://redis:6379/0
+    volumes:
+      - .:/usr/src/app
+      - bundler-data:/usr/local/bundle
+
+  webpack:
+    build: .
+    command: ./bin/webpack-dev-server
+    environment:
+      WEBPACKER_DEV_SERVER_HOST: "0.0.0.0"
+    ports:
+      - 3035:3035
+    volumes:
+      - .:/usr/src/app
+      - bundler-data:/usr/local/bundle
+
+  postgres:
+    image: postgres:11.6
+    environment:
+      POSTGRES_USER:
+      POSTGRES_PASSWORD:
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:5.0
+    command: redis-server
+    ports:
+      - 6379:6379
+    restart: unless-stopped
+    volumes:
+      - redis-data:/var/lib/redis
+
+volumes:
+  bundler-data:
+  postgres-data:
+  redis-data:
+

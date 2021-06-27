@@ -10,4 +10,8 @@ class ActiveSupport::TestCase
   fixtures :all
 
   # Add more helper methods to be used by all tests here...
+  def login(user)
+    controller = ApplicationController.new
+    @token = controller.encode_token({user_id: user.id})
+  end
 end
