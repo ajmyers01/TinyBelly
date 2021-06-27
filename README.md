@@ -127,3 +127,4 @@ Things I could improve on:
   - Better validations on content of the original url, maybe test that they resolve. 
   - build a custom 404 page for if the url we redirect to is not valid, or the slug is no longer valid. I just used json for now. 
   - Test coverage could be more detailed when testing, not just testing one field or the object was created. 
+  - I should have and normally do use smaller incremental commits. 
