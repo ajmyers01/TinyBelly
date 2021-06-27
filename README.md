@@ -99,3 +99,31 @@ Start webpack for the frontend:
 ```sh
 docker-compose up webpack
 ```
+
+Run the Test Suite
+
+```sh
+docker-compose run --rm app rake test
+```
+
+Postman collection Link
+
+https://www.getpostman.com/collections/760cd485f08c1be61dec
+
+You have to create a user, then add the token returned into headers.
+
+
+
+## Reflection on choices 
+
+I utilized a docker file from a personal project to cut down on time so that is why there are a few extra moving pieces. 
+I chose to use JWT for my authorization across my API, and just Bcrypt for password encryption into the postgres database for the users. 
+I added the end points required as well as a few that were useful for testing. 
+
+I started out by writing out tables and relationships in my notebook as well as a few controller actions that I thought would be necessary. 
+Then I generated my migrations and populated my database. For my development process I utilized Postman for api testing, eventually got around to writing minitests then followed that up with refactors of both. 
+
+Things I could improve on:
+  - Better validations on content of the original url, maybe test that they resolve. 
+  - build a custom 404 page for if the url we redirect to is not valid, or the slug is no longer valid. I just used json for now. 
+  - Test coverage could be more detailed when testing, not just testing one field or the object was created. 
